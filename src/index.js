@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 // browserrouter looks at the entire url to see which view to set up
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // import middleware to handle async components
 import promise from 'redux-promise';
 
@@ -18,8 +18,12 @@ ReactDOM.render(
     {/* List all url path inside browserrouter */}
     <BrowserRouter>
       <div>
-        <Route path="/" component={PostsIndex} />
-        <Route path="/posts/new" component={PostsNew} />
+        {/* switch componenet will render that matches the current url
+          order Route as most specific routes first */}
+        <Switch>
+          <Route path="/posts/new" component={PostsNew} />
+          <Route path="/" component={PostsIndex} />
+        </Switch>
       </div>
     </BrowserRouter>
   </Provider>

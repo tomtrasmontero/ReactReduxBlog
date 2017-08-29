@@ -2,14 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+// browserrouter looks at the entire url to see which view to set up
+import { BrowserRouter, Route } from 'react-router-dom';
+// import middleware to handle async components
+import promise from 'redux-promise';
 
-import App from './components/app';
 import reducers from './reducers';
+import PostsIndex from './components/posts_index';
+import PostsNew from './components/posts_new';
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
+    {/* List all url path inside browserrouter */}
+    <BrowserRouter>
+      <div>
+        <Route path="/" component={PostsIndex} />
+        <Route path="/posts/new" component={PostsNew} />
+      </div>
+    </BrowserRouter>
   </Provider>
   , document.querySelector('.container'));

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 // reduxForm is similar to connect helper in react-redux
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions';
 
 class PostNew extends Component {
   constructor() {
@@ -10,13 +13,21 @@ class PostNew extends Component {
   }
 
   onSubmit(values) {
-    console.log(values);
+    this.props.createPost(values)
+    // navigate to root route "/".  this has props.history due to being
+    // in Route componenet in src/index.js
+      .then(() => this.props.history.push('/'));
+
   }
 
   // this field argument includes event handlers
   renderField(field) {
+    // equivalent to touched = field.meta.touched, error = field.meta.error
+    const { meta: { touched, error } } = field;
+    const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+
     return (
-      <div className="form-group">
+      <div className={className}>
         {/* need to put htmlFor tag on the label to help associate it with the input */}
         <label htmlFor={field.label}>{field.label}</label>
         <input
@@ -24,8 +35,10 @@ class PostNew extends Component {
           className="form-control"
           {...field.input}
         />
-        {/* touched means its been touched and focused out */}
-        {field.meta.touched ? field.meta.error : ''}
+        <div className="text-help">
+          {/* touched means its been touched and focused out */}
+          {touched ? error : ''}
+        </div>
       </div>
     );
   }
@@ -57,6 +70,7 @@ class PostNew extends Component {
           component={this.renderField}
         />
         <button type="submit" className="btn btn-primary">Submit</button>
+        <Link to="/" className="btn btn-danger">Cancel</Link>
       </form>
     );
   }
@@ -91,4 +105,6 @@ export default reduxForm({
   // validate: validate, es6
   validate,
   form: 'PostsNewForm',
-})(PostNew);
+})(
+  connect(null, { createPost })(PostNew),
+);

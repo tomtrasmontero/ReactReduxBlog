@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+// Link is used as anchor tag
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../actions';

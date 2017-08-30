@@ -1,9 +1,12 @@
 import _ from 'lodash';
-import { FETCH_POSTS, FETCH_POST } from '../actions/index';
+import { FETCH_POSTS, FETCH_POST, DELETE_POST } from '../actions/index';
 
 // default state to an [] when initialy renders
 export default function (state = {}, action) {
   switch (action.type) {
+    case DELETE_POST:
+      // lodash function which takes the current state obj and remove the matching id
+      return _.omit(state, action.payload.data.id);
     case FETCH_POST:
       // // actions.payload.data is a promise send by axios request
       // const post = action.payload.data;
